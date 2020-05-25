@@ -1,0 +1,10 @@
+README.md
+setup.py
+reddata/__init__.py
+reddata/function.py
+reddata/reddit.py
+reddata.egg-info/PKG-INFO
+reddata.egg-info/SOURCES.txt
+reddata.egg-info/dependency_links.txt
+reddata.egg-info/requires.txt
+reddata.egg-info/top_level.txt

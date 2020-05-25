@@ -6,9 +6,9 @@ import pprint
 def get_date(created):
     return dt.datetime.fromtimestamp(created)
 
-reddit = praw.Reddit(client_id='s_HcoGxQGc7a8A', \
-                     client_secret='dOnPnAYpEhopn3Fgxgh5JPKZH4o', \
-                     user_agent='Rudacus' )
+reddit = praw.Reddit(client_id='', \
+                     client_secret='', \
+                     user_agent='' )
 
 subreddit=reddit.subreddit('VERYBADWIZARDS')
 #print(subreddit.description)

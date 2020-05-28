@@ -69,7 +69,7 @@ Once you have the `praw.ini` file then you need to place this file either:
 * In the current working directory
 * In the launching user’s config directory
 
-The second option is the preferred method but either will work. This will vary depending on what system you run, Windows, OSC or Linux. See [PRAW Documentation](https://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html) for guidance for your system.
+The second option is the preferred method but either will work. This will vary depending on what system you run, Windows, OSX or Linux. See [PRAW Documentation](https://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html) for guidance for your system.
 
 # Pipeline
 
@@ -80,7 +80,7 @@ python3 pipeline.py
 ```
 The pipeline takes a number of arguments:
 
-```
+```command
 optional arguments:
   -h, --help            show this help message and exit
   -t [TOPICS [TOPICS ...]], --topics [TOPICS [TOPICS ...]]
@@ -91,6 +91,12 @@ optional arguments:
                         doesn't take any arguments but needs config.yaml file
                         (provided with package)
 ```
+An example search would be:
+```command
+python3 pipeline.py -t cats  -c 5
+
+```
+
 
 The pipeline needs either -t and -c or -config. If none is provided an error message will appear.
 

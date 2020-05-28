@@ -6,7 +6,7 @@ Home-page: https://github.com/DCMSstats/covid-19-disinformation
 Author: 
 Author-email: 
 License: MIT license
-Description: environment# Social Media Analysis
+Description: # Social Media Analysis
         
         
         ## Getting Started
@@ -20,10 +20,11 @@ Description: environment# Social Media Analysis
         ```command
         pip install -e local_path/reddata
         ```
-        
         Replace `local_path` with the path to your package.
+        > If you are unsure of the local_poath navigate to the folder and run pwd
         
-        ## Enviroment
+        
+        ## Environment
         
         It is best practice to setup a virtual environment.
         
@@ -75,6 +76,15 @@ Description: environment# Social Media Analysis
         * In the launching user’s config directory
         
         The second option is the preferred method but either will work. This will vary depending on what system you run, Windows, OSC or Linux. See [PRAW Documentation](https://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html) for guidance for your system.
+        
+        # Pipeline
+        
+        You can run this pipeline by running in a Terminal:
+        
+        ```command
+        python3 pipeline.py
+        ```
+        To edit the pipeline settings edit `config.yaml`. This can be done with `vim config.yaml` or in your preferred text editor. If you are unsure about `YAML` then read this [quick guide](https://rollout.io/blog/yaml-tutorial-everything-you-need-get-started/).
         
 Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3

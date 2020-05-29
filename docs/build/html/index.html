@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to Social-Media-Analysis’s documentation! &mdash; Social-Media-Analysis  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reddit API Functions" href="doc.api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> Social-Media-Analysis
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Package Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="doc.api.html">Reddit API Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doc.functions.html">Internal Function</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Social-Media-Analysis</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Welcome to Social-Media-Analysis’s documentation!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-reddata">
+<span id="welcome-to-social-media-analysis-s-documentation"></span><h1>Welcome to Social-Media-Analysis’s documentation!<a class="headerlink" href="#module-reddata" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="social-media-analysis">
+<h1>Social Media Analysis<a class="headerlink" href="#social-media-analysis" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>Clone the repository</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/WMDA/social-media-analysis.git
+</pre></div>
+</div>
+<p>You will need to install the python package in the repository. On a windows machine, open the Anaconda Prompt. On a OSX or Linux machine open the Terminal. Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -e local_path/reddata
+</pre></div>
+</div>
+<p>Replace <cite>local_path</cite> with the path to your package.
+&gt; If you are unsure of the local_path navigate to the folder and run pwd</p>
+</div>
+<div class="section" id="environment">
+<h2>Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h2>
+<p>Setup a virtual environment.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m venv venv
+</pre></div>
+</div>
+<p>This sets up up the virtual environment, creating a venv folder.</p>
+<p>To activate the virtual environment run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> venv/bin/activate
+
+<span class="c1"># To deactivate</span>
+deactivate
+</pre></div>
+</div>
+<p>Once the virtual environment has been set up install the project dependencies listed in <cite>requirements.txt</cite>
+using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install -r requirements.txt
+</pre></div>
+</div>
+</div>
+<div class="section" id="praw-authentication">
+<h2>PRAW Authentication<a class="headerlink" href="#praw-authentication" title="Permalink to this headline">¶</a></h2>
+<p>To access reddit you will need,</p>
+<ol class="arabic simple">
+<li><p>Client ID &amp; Client Secret:These two values are needed to access Reddit’s API as a script application.</p></li>
+<li><p>User Agent:  A user agent is a unique identifier that helps Reddit determine the source of network requests.</p></li>
+</ol>
+<p>You may choose to provide these by passing in three keyword arguments when calling the initializer of the Reddit class: client_id, client_secret, user_agent.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">praw</span>
+
+<span class="n">reddit</span> <span class="o">=</span> <span class="n">praw</span><span class="o">.</span><span class="n">Reddit</span><span class="p">(</span><span class="n">client_id</span><span class="o">=</span><span class="s2">&quot;my client id&quot;</span><span class="p">,</span>
+                     <span class="n">client_secret</span><span class="o">=</span><span class="s2">&quot;my client secret&quot;</span><span class="p">,</span>
+                     <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;my user agent&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This method exposes the Authentication keys publicly as they are included in the GitHub code.</p>
+<p>Authentication can also be provided in an <cite>praw.ini</cite> configuration file. To run the code in this project you will need to provide this.
+&gt; It is recommended to use a <cite>praw.ini</cite> file in order to keep your authentication information separate from your code.</p>
+<p>You can obtain this by talking to a member of the team involved in this project.
+Alternatively you can provide your own authentication. To provide your own then look at the [reddit documentation](<a class="reference external" href="https://github.com/reddit-archive/reddit/wiki/API">https://github.com/reddit-archive/reddit/wiki/API</a>).</p>
+<p>Once you have the <cite>praw.ini</cite> file then you need to place this file either:
+* In the current working directory
+* In the launching user’s config directory</p>
+<p>The second option is the preferred method but either will work. This will vary depending on what system you run, Windows, OSC or Linux. See [PRAW Documentation](<a class="reference external" href="https://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html">https://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html</a>) for guidance for your system.</p>
+</div>
+<div class="section" id="pipeline">
+<h2>Pipeline<a class="headerlink" href="#pipeline" title="Permalink to this headline">¶</a></h2>
+<p>You can run this pipeline by running in a Terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 pipeline.py
+</pre></div>
+</div>
+<p>The pipeline takes a number of arguments:</p>
+<dl>
+<dt>optional arguments:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+<p>-t [TOPICS [TOPICS …]], –topics [TOPICS [TOPICS …]] Topics in for praw to search reddit
+-c COMMENTS, –comments COMMENTS
+-config               Selects number of comments for praw to limit to.</p>
+<blockquote>
+<div><p>Uses config.yaml file instead of providing options,
+doesn’t take any arguments but needs config.yaml file
+(provided with package)</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>An example search would be:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 pipeline.py -t cats  -c <span class="m">5</span>
+</pre></div>
+</div>
+<p>The pipeline needs either -t and -c or -config. If none is provided an error message will appear.</p>
+<p>-config uses a config.yaml file (provided in the package). To edit config file use`vim config.yaml` or open the <cite>config.yaml</cite> in your preferred text editor. If you are unsure about <cite>YAML</cite> then read this [quick guide](<a class="reference external" href="https://rollout.io/blog/yaml-tutorial-everything-you-need-get-started/">https://rollout.io/blog/yaml-tutorial-everything-you-need-get-started/</a>).</p>
+<p>When the pipeline is running it should print out the list of topics being searched for in reddit and the number of comments.</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Package Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="doc.api.html">Reddit API Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doc.functions.html">Internal Function</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="doc.api.html" class="btn btn-neutral float-right" title="Reddit API Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Daniel Halls &amp; Joshua Halls
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -17,7 +17,8 @@ You will need to install the python package in the repository. On a windows mach
   pip install -e local_path/reddata
 
 Replace `local_path` with the path to your package.
-> If you are unsure of the local_path navigate to the folder and run pwd
+
+  If you are unsure of the local_path navigate to the folder and run pwd
 
 
 Environment
@@ -70,7 +71,8 @@ You may choose to provide these by passing in three keyword arguments when calli
 This method exposes the Authentication keys publicly as they are included in the GitHub code.
 
 Authentication can also be provided in an `praw.ini` configuration file. To run the code in this project you will need to provide this.
-> It is recommended to use a `praw.ini` file in order to keep your authentication information separate from your code.
+
+  It is recommended to use a `praw.ini` file in order to keep your authentication information separate from your code.
 
 You can obtain this by talking to a member of the team involved in this project.
 Alternatively you can provide your own authentication. To provide your own then look at the [reddit documentation](https://github.com/reddit-archive/reddit/wiki/API).
@@ -79,7 +81,7 @@ Once you have the `praw.ini` file then you need to place this file either:
 * In the current working directory
 * In the launching user’s config directory
 
-The second option is the preferred method but either will work. This will vary depending on what system you run, Windows, OSC or Linux. See [PRAW Documentation](https://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html) for guidance for your system.
+The second option is the preferred method but either will work. This will vary depending on what system you run, Windows, OSC or Linux. See `PRAW Documentation <https://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html>`_ for guidance for your system.
 
 Pipeline
 ---------
@@ -110,6 +112,6 @@ An example search would be:
 
 The pipeline needs either -t and -c or -config. If none is provided an error message will appear.
 
--config uses a config.yaml file (provided in the package). To edit config file use`vim config.yaml` or open the `config.yaml` in your preferred text editor. If you are unsure about `YAML` then read this [quick guide](https://rollout.io/blog/yaml-tutorial-everything-you-need-get-started/).
+-config uses a config.yaml file (provided in the package). To edit config file use`vim config.yaml` or open the `config.yaml` in your preferred text editor. If you are unsure about `YAML` then read this `quick guide <https://rollout.io/blog/yaml-tutorial-everything-you-need-get-started/>`_.
 
 When the pipeline is running it should print out the list of topics being searched for in reddit and the number of comments.

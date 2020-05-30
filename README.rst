@@ -100,12 +100,12 @@ optional arguments:
   
 -t, --topics                Topics in for praw to search reddit
   
--c, --comments      COMMENTS
+-c, --comments              Selects number of comments for praw to limit to.
   
--config                     Selects number of comments for praw to limit to.
-                            Uses config.yaml file instead of providing options,
+-config                     Uses config.yaml file instead of providing options,
                             doesn't take any arguments but needs config.yaml file
                             (provided with package)
+                            
 
 An example search would be:
 

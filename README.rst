@@ -75,7 +75,7 @@ Authentication can also be provided in an `praw.ini` configuration file. To run 
   It is recommended to use a `praw.ini` file in order to keep your authentication information separate from your code.
 
 You can obtain this by talking to a member of the team involved in this project.
-Alternatively you can provide your own authentication. To provide your own then look at the `reddit documentation <https://github.com/reddit-archive/reddit/wiki/API>_.
+Alternatively you can provide your own authentication. To provide your own then look at the `reddit documentation <https://github.com/reddit-archive/reddit/wiki/API>`_.
 
 Once you have the `praw.ini` file then you need to place this file either:
 * In the current working directory

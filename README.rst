@@ -98,9 +98,9 @@ optional arguments:
 
   -h, --help                                               show this help message and exit
   
-  -t --topics                                              Topics in for praw to search reddit
+  -t, --topics                                              Topics in for praw to search reddit
   
-  -c COMMENTS, --comments                                  COMMENTS
+  -c COMMENTS --comments                                   COMMENTS
   
   -config                                                  Selects number of comments for praw to limit to.
                                                            Uses config.yaml file instead of providing options,

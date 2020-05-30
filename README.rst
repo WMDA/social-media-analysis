@@ -78,8 +78,9 @@ You can obtain this by talking to a member of the team involved in this project.
 Alternatively you can provide your own authentication. To provide your own then look at the `reddit documentation <https://github.com/reddit-archive/reddit/wiki/API>`_.
 
 Once you have the `praw.ini` file then you need to place this file either:
-* In the current working directory
-* In the launching user’s config directory
+
+- In the current working directory
+- In the launching user’s config directory
 
 The second option is the preferred method but either will work. This will vary depending on what system you run, Windows, OSC or Linux. See `PRAW Documentation <https://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html>`_ for guidance for your system.
 

@@ -12,10 +12,11 @@ This pipeline takes an a topic or topics (any number equal or greater than 1) an
 import reddata as rd
 import praw
 
-config = rd.load_config()
+options= rd.get_arguments()
+topics_list = str(options.topics)
+number_comments = int(options.comments)
 
-topics_list = config["topics"]
-number_comments = config["comments"]
+rd.print_output(topics_list,number_comments)
 
 reddit = praw.Reddit("reddit")
 

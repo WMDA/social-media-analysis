@@ -25,6 +25,30 @@ def get_subreddit_names(reddit_object, search_terms):
     return data
 
 
+def add_reddit_data(df):
+    """
+    Adds the latest reddit to the existing data and drops any non-unique values
+    
+    Parameters
+    ----------
+    df : dataframes list
+        2 or more dataframes given as an array
+
+    Returns
+    -------
+    Pandas dataframe with only unique values
+
+    """
+    
+    
+    
+    combined_data = pd.concat(df)
+    
+    unique_data = combined_data.drop_duplicates()
+    
+    return(unique_data)
+    
+
 
 def get_subreddit_data(reddit_object, subs, comments = 10):
     """

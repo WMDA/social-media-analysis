@@ -120,10 +120,17 @@ An example search would be:
 .. code-block:: bash
 
   python3 pipeline.py -t cats  -c 5
+  
+  python3 pipeline.py -t cats -c 5 -csv /file_path -n my_csv
+  
+  python3 pipeline.py -t cats -c 5 -gbq my_project_id -n my_gbq
 
 
 The pipeline needs either -t and -c or -config. If none is provided an error message will appear.
 
 -config uses a config.yaml file (provided in the package). To edit config file use`vim config.yaml` or open the `config.yaml` in your preferred text editor. If you are unsure about `YAML` then read this `quick guide <https://rollout.io/blog/yaml-tutorial-everything-you-need-get-started/>`_.
 
-When the pipeline is running it should print out the list of topics being searched for in reddit and the number of comments.
+If the -gbq is used, a table called reddit_table will be created but needs a name using -n. If a name is not given error message will appear.  
+
+
+When the pipeline is running it will print out the list of topics being searched for in reddit and the number of comments. 

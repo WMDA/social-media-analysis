@@ -1,9 +1,10 @@
 import yaml
 import argparse
 
+
 def load_config(config_file = "config.yaml"):
     config_yml = open(config_file)
-    config = yaml.load(config_yml)
+    config = yaml.load(config_yml, yaml.SafeLoader)
     return config
 
 def get_arguments():
@@ -24,6 +25,7 @@ def get_arguments():
     else:
         return options
 
-def print_output(topic,comments):
-    print('Searching reddit for','\n',topic)
-    print('Limiting comments to','\n', comments)
+
+def print_output(topic,comments,*args):
+    print('\n','Searching reddit for','\n',topic)
+    print('\n','Limiting comments to','\n', comments)

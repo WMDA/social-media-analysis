@@ -95,26 +95,23 @@ You can run this pipeline by running in a Terminal:
 The pipeline takes a number of arguments:
 
 optional arguments:
-  -h, --help            show this help message and exit
+  -h, --help            Show this help message and exit
   
-  -t [TOPICS [TOPICS ...]], --topics [TOPICS [TOPICS ...]]
-                        Topics that praw will search reddit for.
+  -t, --topics          Topics that praw will search reddit for.
                         
-  -c COMMENTS, --comments COMMENTS
-                        Selects number of comments for praw to limit to.
+  -c, --comments        Selects number of comments for praw to limit to.
                         
   -config               Uses config.yaml file instead of providing options,
                         doesn't take any arguments but needs config.yaml file
                         (provided with package).
                         
-  -csv CSV              Saves output to CSV, needs a directory to save csv to.
+  -csv                  Saves output to CSV, needs a directory to save csv to.
   
-  -n NAME, --name NAME  Gives the file a name, if this option is not used in
+  -n, --name            Gives the file a name, if this option is not used in
                         conjunction with -csv then file will be called
                         reddit_database.
                         
-  -gbq GBQ, --bigquery GBQ
-                        Saves results to google bigquery reddit_table. Needs
+  -gbq, --bigquery      Saves results to google bigquery reddit_table. Needs
                         project id (found on google cloud platform),
                         reddit_table also needs name so flag -n must be used.
 

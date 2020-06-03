@@ -121,7 +121,7 @@ The pipeline takes a number of arguments:
                     default is new. Needs one of the following arguments:
                     controversial, gilded, hot, rising, top
 
-An examples of searchs would be:
+Examples of searchs are:
 
 .. code-block:: bash
 

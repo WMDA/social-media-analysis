@@ -99,7 +99,7 @@ The pipeline takes a number of arguments:
 -t, --topics        Topics that praw will search reddit for. Required if
                    -config not used.
 
--c,--comments      Selects number of comments for praw to limit to.
+-c, --comments      Selects number of comments for praw to limit to.
                     Required if -config not used.
 
 -config             Uses config.yaml file instead of providing options,
@@ -108,11 +108,11 @@ The pipeline takes a number of arguments:
 
 -csv                Saves output to CSV, needs a directory to save csv to.
 
--n,--name           Gives the file a name, if this option is not used in
+-n, --name           Gives the file a name, if this option is not used in
                     conjunction with -csv then file will be called
                     reddit_database.
 
--gbq,--bigquery   Saves results to google bigquery reddit_table. Needs
+-gbq, --bigquery   Saves results to google bigquery reddit_table. Needs
                   project id (found on google cloud platform),
                   reddit_table also needs name so flag -n must be used.
 

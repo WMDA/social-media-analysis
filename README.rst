@@ -94,7 +94,6 @@ You can run this pipeline by running in a Terminal:
 
 The pipeline takes a number of arguments:
 
-optional arguments:
 -h, --help          show this help message and exit
 
 -t, --topics        Topics that praw will search reddit for. Required if
@@ -113,9 +112,9 @@ optional arguments:
                     conjunction with -csv then file will be called
                     reddit_database.
 
--gbq, --bigquery    Saves results to google bigquery reddit_table. Needs
-                    project id (found on google cloud platform),
-                    reddit_table also needs name so flag -n must be used.
+-gbq, --bigquery   Saves results to google bigquery reddit_table. Needs
+                   project id (found on google cloud platform),
+                   reddit_table also needs name so flag -n must be used.
 
 -s, --sort          Tells pipeline to sort for comments based on
                     attribute. If this argument isn't used then the

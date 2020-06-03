@@ -95,32 +95,32 @@ You can run this pipeline by running in a Terminal:
 The pipeline takes a number of arguments:
 
 optional arguments:
--h, --help             show this help message and exit
+-h, --help          show this help message and exit
 
--t, --topics           Topics that praw will search reddit for. Required if
-                      -config not used.
+-t, --topics        Topics that praw will search reddit for. Required if
+                   -config not used.
 
--c, --comments         Selects number of comments for praw to limit to.
-                       Required if -config not used.
+-c, --comments      Selects number of comments for praw to limit to.
+                    Required if -config not used.
 
--config                Uses config.yaml file instead of providing options,
-                       doesn't take any arguments but needs config.yaml file
-                       (provided with package).
+-config             Uses config.yaml file instead of providing options,
+                    doesn't take any arguments but needs config.yaml file
+                    (provided with package).
 
--csv CSV               Saves output to CSV, needs a directory to save csv to.
+-csv                Saves output to CSV, needs a directory to save csv to.
 
--n, --name             Gives the file a name, if this option is not used in
-                       conjunction with -csv then file will be called
-                       reddit_database.
+-n, --name          Gives the file a name, if this option is not used in
+                    conjunction with -csv then file will be called
+                    reddit_database.
 
--gbq, --bigquery       Saves results to google bigquery reddit_table. Needs
-                       project id (found on google cloud platform),
-                       reddit_table also needs name so flag -n must be used.
-                       
--s, --sort             Tells pipeline to sort for comments based on
-                       attribute. If this argument isn't used then the
-                       default is new. Needs one of the following arguments:
-                       controversial, gilded, hot, rising, top
+-gbq, --bigquery    Saves results to google bigquery reddit_table. Needs
+                    project id (found on google cloud platform),
+                    reddit_table also needs name so flag -n must be used.
+
+-s, --sort          Tells pipeline to sort for comments based on
+                    attribute. If this argument isn't used then the
+                    default is new. Needs one of the following arguments:
+                    controversial, gilded, hot, rising, top
 
 An examples of searchs would be:
 

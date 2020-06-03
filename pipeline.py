@@ -23,21 +23,31 @@ options= rd.get_arguments()
 topics_list = options.topics
 number_comments = int(options.comments)
 
-# Warning messages if file name or no file directory given
+# Warning messages if no file name or no file directory given.
+#For dev purposes and checking script works, command line can be run without having to save results.
 if options.name and not options.csv:
-    print("WARNING: File name given but directory was not given. Results will not saved to file format.",'\n',"Use -h or --help for support.")
+    print("WARNING: File name was given but directory was not given. Use -csv or -gbq to save results. Results will not saved.",'\n',"Use -h or --help for support.")
+elif options.csv and not options.name:
+    print("No name given to .csv file. File will be called reddit_database.csv.","\n","WARNING: This will overwrite any other file named reddit_database.csv")
 elif not options.csv and not options.name and not options.gbq:
-    print("WARNING: No flag to save results to a file format was given." '\n',"Use -h or --help for support or go to https://github.com/WMDA/social-media-analysis")
+    print("WARNING: No flag to save results to a file format was given. Results will not be saved" '\n',"Use -h or --help for support or go to https://github.com/WMDA/social-media-analysis")
 
-# Prints ouput of what topics are being searched for
-rd.print_output(topics_list,number_comments)
+# Prints ouput of what topics are being searched for, number of comments limited to and how comments are sorted, default is new.
+if options.sort:
+    rd.print_output(topics_list,number_comments,options.sort)
+else:
+    rd.print_output(topics_list,number_comments)
 
 #Calls reddit functions from reddit.py
+#Sorts comments out either by -s input or default is new.
 reddit = praw.Reddit("reddit")
 subs_array = rd.get_subreddit_names(reddit, topics_list)
-database = rd.get_subreddit_data(reddit, subs_array, number_comments)
+if options.sort:
+    database = rd.get_subreddit_data(reddit, subs_array, number_comments,options.sort)
+else:
+    database = rd.get_subreddit_data(reddit, subs_array, number_comments)
 
-# Assigns results to csv
+# Assigns results to csv (-csv) or gbq (-gbq & -n) if those options are selected.
 if options.csv and not options.name:
     database.to_csv("%s/reddit_database.csv" % options.csv, encoding='utf-8', index=False)
 elif options.csv and options.name:

@@ -26,7 +26,7 @@ def get_subreddit_names(reddit_object, search_terms):
 
 
 
-def get_subreddit_data(reddit_object, subs, comments = 10):
+def get_subreddit_data(reddit_object, subs, comments, sort='new'):
     """
         Get Subreddit data
 
@@ -58,7 +58,15 @@ def get_subreddit_data(reddit_object, subs, comments = 10):
 
         subreddit = reddit.subreddit(sub)
 
-        cont_subreddit = subreddit.new(limit=comments)
+        submission_dict ={'new':subreddit.new, \
+                          'controversial':subreddit.controversial,\
+                          'gilded':subreddit.gilded,\
+                          'hot':subreddit.hot,\
+                          'rising':subreddit.rising,\
+                          'top':subreddit.top }
+
+
+        cont_subreddit = submission_dict[sort](limit=comments)
 
         for submission in cont_subreddit:
             topics_dict["title"].append(submission.title)
@@ -72,4 +80,3 @@ def get_subreddit_data(reddit_object, subs, comments = 10):
 
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
-    

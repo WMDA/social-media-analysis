@@ -94,29 +94,52 @@ You can run this pipeline by running in a Terminal:
 
 The pipeline takes a number of arguments:
 
+-h, --help          show this help message and exit
 
-optional arguments:
+-t, --topics        Topics that praw will search reddit for. Required if
+                   -config not used.
 
--h, --help                  show this help message and exit
-  
--t, --topics                Topics in for praw to search reddit
-  
--c, --comments              Selects number of comments for praw to limit to.
-  
--config                     Uses config.yaml file instead of providing options,
-                            doesn't take any arguments but needs config.yaml file
-                            (provided with package)
-                            
+-c, --comments      Selects number of comments for praw to limit to.
+                    Required if -config not used.
 
-An example search would be:
+-config             Uses config.yaml file instead of providing options,
+                    doesn't take any arguments but needs config.yaml file
+                    (provided with package).
+
+-csv                Saves output to CSV, needs a directory to save csv to.
+
+-n, --name           Gives the file a name, if this option is not used in
+                    conjunction with -csv then file will be called
+                    reddit_database.
+
+-gbq, --bigquery   Saves results to google bigquery reddit_table. Needs
+                  project id (found on google cloud platform),
+                  reddit_table also needs name so flag -n must be used.
+
+-s, --sort          Tells pipeline to sort for comments based on
+                    attribute. If this argument isn't used then the
+                    default is new. Needs one of the following arguments:
+                    controversial, gilded, hot, rising, top
+
+Examples of searchs are:
 
 .. code-block:: bash
 
   python3 pipeline.py -t cats  -c 5
 
+  python3 pipeline.py -t cats -c 5 -csv /file_path -n my_csv
+
+  python3 pipeline.py -t cats -c 5 -gbq my_project_id -n my_gbq
+
+  python3 pipeline.py -t cats -c 5 -csv /file_path -n my_csv -s hot
 
 The pipeline needs either -t and -c or -config. If none is provided an error message will appear.
 
 -config uses a config.yaml file (provided in the package). To edit config file use`vim config.yaml` or open the `config.yaml` in your preferred text editor. If you are unsure about `YAML` then read this `quick guide <https://rollout.io/blog/yaml-tutorial-everything-you-need-get-started/>`_.
 
-When the pipeline is running it should print out the list of topics being searched for in reddit and the number of comments.
+-s is an optional argument. If -s is not used then the pipeline will sort comments by new.
+
+If the -gbq is used, a table called reddit_table will be created but needs a name using -n. If a name is not given error message will appear.
+
+
+When the pipeline is running it will print out the list of topics being searched for in reddit and the number of comments limited to and how comments are sorted.

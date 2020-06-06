@@ -1,10 +1,10 @@
 import base64
-import datetime
 import pandas as pd
 import pandas_gbq
 import praw
+import datetime
 
-def cache_reddit_data(event, context):
+def cache_reddit_data():
     """
     Stores reddit data
     """
@@ -15,7 +15,7 @@ def cache_reddit_data(event, context):
 
     current_data["backup_time"] = datetime.datetime.today().time()
 
-    pandas_gbq.to_gbq(current_data, "reddit-276014.reddit_test", project_id="reddit-276014", if_exists="append")
+    pandas_gbq.to_gbq(current_data, "reddit_test.reddit_test", project_id="reddit-276014", if_exists="append")
 
     return None
 
@@ -32,8 +32,89 @@ def collect_reddit_data():
                      client_secret='reMSAKkNv5daoHSRG3Cy15BhVw8',
                      user_agent='cdc')
 
-    subs_array = rd.get_subreddit_names(reddit, topics_list)
+    subs_array = get_subreddit_names(reddit, topics_list)
 
-    database = rd.get_subreddit_data(reddit, subs_array, comments= comments_number, sort="new"  )
+    database = get_subreddit_data(reddit, subs_array, comments= comments_number, sort="new"  )
 
     return(database)
+
+
+def get_subreddit_names(reddit_object, search_terms):
+
+    reddit = reddit_object
+
+    topics_dict = {
+                        "subreddit": []
+                  }
+
+    topic_list = search_terms
+
+    for topic in topic_list:
+
+        cont_subreddit = reddit.subreddit("all").search(topic)
+
+        for submission in cont_subreddit:
+                topics_dict["subreddit"].append(submission.subreddit)
+
+    data = pd.DataFrame(topics_dict)
+
+    data = data["subreddit"].apply(str).unique()
+
+    return data
+
+
+
+def get_subreddit_data(reddit_object, subs, comments, sort='new'):
+    """
+        Get Subreddit data
+
+        Parameters
+        ----------
+        reddit_object : stuffs
+
+        Returns
+        -------
+        Pandas Dataframe
+        """
+
+    reddit = reddit_object
+
+    topics_dict = {     "title":[], \
+                        "score":[], \
+                        "id":[], "url":[], \
+                        "comms_num": [], \
+                        "created": [], \
+                        "body":[], \
+                        "subreddit": []
+                  }
+
+    sub_list = subs
+
+    for sub in sub_list:
+
+        print('Working on this sub right now: \n', sub)
+
+        subreddit = reddit.subreddit(sub)
+
+        submission_dict ={'new':subreddit.new, \
+                          'controversial':subreddit.controversial,\
+                          'gilded':subreddit.gilded,\
+                          'hot':subreddit.hot,\
+                          'rising':subreddit.rising,\
+                          'top':subreddit.top }
+
+
+        cont_subreddit = submission_dict[sort](limit=comments)
+
+        for submission in cont_subreddit:
+            topics_dict["title"].append(submission.title)
+            topics_dict["score"].append(submission.score)
+            topics_dict["id"].append(submission.id)
+            topics_dict["url"].append(submission.url)
+            topics_dict["comms_num"].append(submission.num_comments)
+            topics_dict["created"].append(submission.created)
+            topics_dict["body"].append(submission.selftext)
+            topics_dict["subreddit"].append(submission.subreddit)
+
+    topics_data = pd.DataFrame(topics_dict)
+    return topics_data

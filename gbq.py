@@ -2,12 +2,13 @@ import base64
 import pandas as pd
 import pandas_gbq
 import praw
-import datetime
 
-def cache_reddit_data():
+def cache_reddit_data(event, context):
     """
     Stores reddit data
     """
+
+    pubsub_message = base64.b64decode(event['data']).decode('utf-8')
 
     current_data = collect_reddit_data()
 

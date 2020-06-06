@@ -97,7 +97,7 @@ The pipeline takes a number of arguments:
 -h, --help          show this help message and exit
 
 -t, --topics        Topics that praw will search reddit for. Required if
-                   -config not used.
+                   -config not used. For use multiple word arguments use " ".
 
 -c, --comments      Selects number of comments for praw to limit to.
                     Required if -config not used.

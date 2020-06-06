@@ -31,8 +31,8 @@ def get_arguments():
         -------
         Optional and Required command line arguments
     '''
-    parse = argparse.ArgumentParser()
-    parse.add_argument("-t", "--topics", dest='topics', nargs='*', help='Topics that praw will search reddit for. Required if -config not used.')
+    parse = argparse.ArgumentParser(usage='pipeline [-t] [-c] [<options>] \n or: pipeline [-config] [<options>]')
+    parse.add_argument("-t", "--topics", dest='topics', nargs='*', help='Topics that praw will search reddit for. Required if -config not used. For use multiple word arguments use " ". ')
     parse.add_argument("-c","--comments", dest='comments', help='Selects number of comments for praw to limit to. Required if -config not used.')
     parse.add_argument("-config",help="Uses config.yaml file instead of providing options, doesn't take any arguments but needs config.yaml file (provided with package).",action="store_true")
     parse.add_argument("-csv", help="Saves output to CSV, needs a directory to save csv to.")

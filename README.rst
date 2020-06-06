@@ -127,7 +127,7 @@ Examples of searchs are:
 
   python3 pipeline.py -t cats  -c 5
 
-  python3 pipeline.py -t cats -c 5 -csv /file_path -n my_csv
+  python3 pipeline.py -t "ginger cats" dogs -c 5 -csv /file_path -n my_csv
 
   python3 pipeline.py -t cats -c 5 -gbq my_project_id -n my_gbq
 

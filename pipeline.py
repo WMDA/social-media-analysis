@@ -43,14 +43,17 @@ else:
 reddit = praw.Reddit("reddit")
 subs_array = rd.get_subreddit_names(reddit, topics_list)
 if options.sort:
-    database = rd.get_subreddit_data(reddit, subs_array, number_comments,options.sort)
+    database,comments = rd.get_subreddit_data(reddit, subs_array, number_comments,options.sort)
 else:
-    database = rd.get_subreddit_data(reddit, subs_array, number_comments)
+    database,comments = rd.get_subreddit_data(reddit, subs_array, number_comments)
 
 # Assigns results to csv (-csv) or gbq (-gbq & -n) if those options are selected.
 if options.csv and not options.name:
     database.to_csv("%s/reddit_database.csv" % options.csv, encoding='utf-8', index=False)
+    comments.to_csv("%s/reddit_comments_database.csv" % options.csv, encoding='utf-8', index=False)
 elif options.csv and options.name:
     database.to_csv("%s/%s.csv" % (options.csv,options.name), encoding='utf-8', index=False)
+    comments.to_csv("%s/%s_comments.csv" % (options.csv,options.name), encoding='utf-8', index=False)
 elif options.gbq:
     database.to_gbq('%s.reddit_table' %options.name,'%s' %options.gbq, chunksize=None, if_exists='append')
+    comments.to_gbq('%s.reddit_comments_table' %options.name,'%s' %options.gbq, chunksize=None, if_exists='append')

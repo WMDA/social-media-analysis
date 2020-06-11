@@ -1,3 +1,6 @@
 venv
 praw.ini
 *.csv
+.pytest_cache
+__pycache__
+*.pyc

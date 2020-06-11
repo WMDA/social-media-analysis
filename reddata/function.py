@@ -1,6 +1,6 @@
 import yaml
 import argparse
-
+import datetime as dt
 
 def load_config(config_file = "config.yaml"):
     '''
@@ -76,3 +76,30 @@ def print_output(topic,comments,*args):
         print('\n','Sorting comments based on: %s' %args)
     else:
         print('\n',"Sorting comments based on: new")
+
+
+def convert_date(x):
+    '''
+    Converts the date column from the reddit api into standard format
+    '''
+    return dt.datetime.fromtimestamp(x)
+
+
+def merge_data_unique(dataset1, dataset2):
+    """
+    Merged two datasets returning only unique values
+
+    Returns
+    -------
+    None.
+
+    """
+
+    merged = pd.merge(left=dataset1, right=dataset2, how="inner")
+
+    return merged
+
+def date_range(x):
+    early = min(x)
+    late = max(x)
+    return early, late, print(f"The latest date is is {late} and the earliest date is {early}")

@@ -50,7 +50,7 @@ def add_reddit_data(df):
     
 
 
-def get_subreddit_data(reddit_object, subs, comments = 10):
+def get_subreddit_data(reddit_object, subs, comments, sort='new', collect_comments=True):
     """
         Get Subreddit data
 
@@ -67,22 +67,34 @@ def get_subreddit_data(reddit_object, subs, comments = 10):
 
     topics_dict = {     "title":[], \
                         "score":[], \
-                        "id":[], "url":[], \
+                        "id":[], \
+                         "url":[], \
                         "comms_num": [], \
                         "created": [], \
                         "body":[], \
-                        "subreddit": []
+                        "subreddit": [] ,\
+                        "author":[],\
+                        "permalink":[]
                   }
 
     sub_list = subs
 
+
     for sub in sub_list:
 
-        print('Working on this sub right now: \n', sub)
+        print('\nWorking on this sub right now: \n', sub)
 
         subreddit = reddit.subreddit(sub)
 
-        cont_subreddit = subreddit.new(limit=comments)
+        submission_dict ={'new':subreddit.new, \
+                          'controversial':subreddit.controversial,\
+                          'gilded':subreddit.gilded,\
+                          'hot':subreddit.hot,\
+                          'rising':subreddit.rising,\
+                          'top':subreddit.top }
+
+
+        cont_subreddit = submission_dict[sort](limit=comments)
 
         for submission in cont_subreddit:
             topics_dict["title"].append(submission.title)
@@ -93,7 +105,33 @@ def get_subreddit_data(reddit_object, subs, comments = 10):
             topics_dict["created"].append(submission.created)
             topics_dict["body"].append(submission.selftext)
             topics_dict["subreddit"].append(submission.subreddit)
+            topics_dict["author"].append(submission.author)
+            topics_dict["permalink"].append(submission.permalink)
 
-    topics_data = pd.DataFrame(topics_dict)
-    return topics_data
-    
+        topics_comment={"comment_author":[], \
+                        "id_from_thread":[], \
+                        "comment_body":[], \
+                     "comment_permalink":[],\
+                     "comment_score":[]}
+        if collect_comments==True:
+            for url_id in topics_dict['id']:
+                try:
+                    submission= reddit.submission(id=url_id)
+                    submission.comments.replace_more(limit=None)
+                    for comment in submission.comments.list():
+                        topics_comment['comment_body'].append(comment.body)
+                        topics_comment['id_from_thread'].append(url_id)
+                        topics_comment['comment_author'].append(comment.author)
+                        topics_comment['comment_permalink'].append(comment.permalink)
+                        topics_comment['comment_score'].append(comment.score)
+                except HTTPException:
+                    print('Error unable to collect comments due to HTTPException')
+                    continue
+
+    if collect_comments==True:
+        comments_data= pd.DataFrame(topics_comment)
+        topics_data = pd.DataFrame(topics_dict)
+        return topics_data, comments_data
+    else:
+        topics_data = pd.DataFrame(topics_dict)
+        return topics_data

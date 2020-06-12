@@ -39,6 +39,7 @@ def get_arguments():
     parse.add_argument("-n","--name", dest='name', help="Gives the file a name, if this option is not used in conjunction with -csv then file will be called reddit_database.")
     parse.add_argument("-gbq","--bigquery",dest="gbq",help="Saves results to google bigquery reddit_table. Needs project id (found on google cloud platform), reddit_table also needs name so flag -n must be used.")
     parse.add_argument("-s","--sort", dest="sort", help="Tells pipeline to sort for comments based on attribute. If this argument isn't used then the default is new. Needs one of the following arguments: controversial, gilded, hot, rising, top")
+    parse.add_argument("-D","--drop",dest="drop",help="Tells pipeline not to search for comments in threads. Searching for comments slows pipeline down and sometimes unnecessary.",action="store_true")
     options= parse.parse_args()
     if options.sort:
         sort_list =["controversal", 'gilded', 'hot','rising', 'top']

@@ -26,7 +26,7 @@ def get_subreddit_names(reddit_object, search_terms):
 
 
 
-def get_subreddit_data(reddit_object, subs, comments, sort='new'):
+def get_subreddit_data(reddit_object, subs, comments, sort='new', collect_comments=True):
     """
         Get Subreddit data
 
@@ -89,21 +89,25 @@ def get_subreddit_data(reddit_object, subs, comments, sort='new'):
                         "comment_body":[], \
                      "comment_permalink":[],\
                      "comment_score":[]}
-        
-        for url_id in topics_dict['id']:
-            try:
-                submission= reddit.submission(id=url_id)
-                submission.comments.replace_more(limit=None)
-                for comment in submission.comments.list():
+        if collect_comments==True:
+            for url_id in topics_dict['id']:
+                try:
+                    submission= reddit.submission(id=url_id)
+                    submission.comments.replace_more(limit=None)
+                    for comment in submission.comments.list():
                         topics_comment['comment_body'].append(comment.body)
                         topics_comment['id_from_thread'].append(url_id)
                         topics_comment['comment_author'].append(comment.author)
                         topics_comment['comment_permalink'].append(comment.permalink)
                         topics_comment['comment_score'].append(comment.score)
-            except HTTPException:
+                except HTTPException:
                     print('Error unable to collect comments due to HTTPException')
                     continue
 
-    topics_data = pd.DataFrame(topics_dict)
-    comments_data= pd.DataFrame(topics_comment)
-    return topics_data, comments_data
+    if collect_comments==True:
+        comments_data= pd.DataFrame(topics_comment)
+        topics_data = pd.DataFrame(topics_dict)
+        return topics_data, comments_data
+    else:
+        topics_data = pd.DataFrame(topics_dict)
+        return topics_data

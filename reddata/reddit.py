@@ -58,7 +58,7 @@ def get_subreddit_data(reddit_object, subs, comments, sort='new'):
 
     for sub in sub_list:
 
-        print('Working on this sub right now: \n', sub)
+        print('\nWorking on this sub right now: \n', sub)
 
         subreddit = reddit.subreddit(sub)
 
@@ -89,9 +89,8 @@ def get_subreddit_data(reddit_object, subs, comments, sort='new'):
                         "comment_body":[], \
                      "comment_permalink":[],\
                      "comment_score":[]}
-
+        
         for url_id in topics_dict['id']:
-            print('Collecting Comments from thread id: \n',url_id)
             try:
                 submission= reddit.submission(id=url_id)
                 submission.comments.replace_more(limit=None)

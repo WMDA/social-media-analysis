@@ -97,7 +97,7 @@ The pipeline takes a number of arguments:
 -h, --help          show this help message and exit
 
 -t, --topics        Topics that praw will search reddit for. Required if
-                   -config not used.
+                   -config not used. For use multiple word arguments use " ".
 
 -c, --comments      Selects number of comments for praw to limit to.
                     Required if -config not used.
@@ -119,7 +119,12 @@ The pipeline takes a number of arguments:
 -s, --sort          Tells pipeline to sort for comments based on
                     attribute. If this argument isn't used then the
                     default is new. Needs one of the following arguments:
-                    controversial, gilded, hot, rising, top
+                    controversial, gilded, hot, rising, top.
+
+-D, --drop          Tells pipeline not to search for comments in threads.
+                    Searching for comments slows pipeline down and
+                    sometimes unnecessary.
+
 
 Examples of searchs are:
 
@@ -127,11 +132,15 @@ Examples of searchs are:
 
   python3 pipeline.py -t cats  -c 5
 
-  python3 pipeline.py -t cats -c 5 -csv /file_path -n my_csv
+  python3 pipeline.py -t "ginger cats" dogs -c 5 -csv /file_path -n my_csv
 
   python3 pipeline.py -t cats -c 5 -gbq my_project_id -n my_gbq
 
   python3 pipeline.py -t cats -c 5 -csv /file_path -n my_csv -s hot
+
+  python3 pipeline.py -t cats -c 5 -csv /file_path -n my_csv -s hot -D
+
+This pipeline will try and collect as many comments as able to from threads. WARNING this can take a long time! If this is not wanted use -D to stop.
 
 The pipeline needs either -t and -c or -config. If none is provided an error message will appear.
 

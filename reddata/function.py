@@ -31,14 +31,15 @@ def get_arguments():
         -------
         Optional and Required command line arguments
     '''
-    parse = argparse.ArgumentParser()
-    parse.add_argument("-t", "--topics", dest='topics', nargs='*', help='Topics that praw will search reddit for. Required if -config not used.')
+    parse = argparse.ArgumentParser(usage='pipeline [-t] [-c] [<options>] \n or: pipeline [-config] [<options>]')
+    parse.add_argument("-t", "--topics", dest='topics', nargs='*', help='Topics that praw will search reddit for. Required if -config not used. For use multiple word arguments use " ". ')
     parse.add_argument("-c","--comments", dest='comments', help='Selects number of comments for praw to limit to. Required if -config not used.')
     parse.add_argument("-config",help="Uses config.yaml file instead of providing options, doesn't take any arguments but needs config.yaml file (provided with package).",action="store_true")
     parse.add_argument("-csv", help="Saves output to CSV, needs a directory to save csv to.")
     parse.add_argument("-n","--name", dest='name', help="Gives the file a name, if this option is not used in conjunction with -csv then file will be called reddit_database.")
     parse.add_argument("-gbq","--bigquery",dest="gbq",help="Saves results to google bigquery reddit_table. Needs project id (found on google cloud platform), reddit_table also needs name so flag -n must be used.")
     parse.add_argument("-s","--sort", dest="sort", help="Tells pipeline to sort for comments based on attribute. If this argument isn't used then the default is new. Needs one of the following arguments: controversial, gilded, hot, rising, top")
+    parse.add_argument("-D","--drop",dest="drop",help="Tells pipeline not to search for comments in threads. Searching for comments slows pipeline down and sometimes unnecessary.",action="store_true")
     options= parse.parse_args()
     if options.sort:
         sort_list =["controversal", 'gilded', 'hot','rising', 'top']

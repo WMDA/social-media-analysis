@@ -27,6 +27,18 @@ def get_subreddit_names(reddit_object, search_terms):
     return data
 
 
+def add_reddit_data(df):
+    """
+    Adds the latest reddit to the existing data and drops any non-unique values
+
+    Parameters
+    ----------
+    df : dataframes list
+        2 or more dataframes given as an array
+
+    Returns
+    -------
+    Pandas dataframe with only unique values
 
 def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
     """
@@ -45,7 +57,8 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
 
     topics_dict = {     "title":[], \
                         "score":[], \
-                        "id":[], "url":[], \
+                        "id":[], \
+                         "url":[], \
                         "comms_num": [], \
                         "created": [], \
                         "body":[], \
@@ -56,9 +69,10 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
 
     sub_list = subs
 
+
     for sub in sub_list:
 
-        print('Working on this sub right now: \n', sub)
+        print('\nWorking on this sub right now: \n', sub)
 
         subreddit = reddit.subreddit(sub)
 

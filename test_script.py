@@ -3,7 +3,9 @@ import pandas as pd
 import os
 import sys
 
+# tut tut :P 
 os.chdir('/home/daniel/Codes/social-media/social-media-analysis')
+
 reddit = praw.Reddit('reddit')
 
 topics_dict = {"subreddit": [] }

@@ -20,7 +20,7 @@ Replace `local_path` with the path to your package.
 
   If you are unsure of the local_path navigate to the folder and run pwd
  
- 
+
 Environment
 -----------
 Setup a virtual environment.

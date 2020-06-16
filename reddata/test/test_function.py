@@ -2,7 +2,7 @@
 import pytest
 import numpy as np
 import pandas as pd
-import disinfo as di
+import reddata as rd
 from pandas._testing import assert_frame_equal
 import datetime
 
@@ -17,8 +17,8 @@ dates = np.array(['2005-02-01', '2005-02-02', '2005-02-03', '2005-02-04',
 
 
 def test_date_range():
-    assert di.date_range(dates)[1] == np.datetime64('2005-02-28')
-    assert di.date_range(dates)[0] == np.datetime64('2005-02-01')
+    assert rd.date_range(dates)[1] == np.datetime64('2005-02-28')
+    assert rd.date_range(dates)[0] == np.datetime64('2005-02-01')
 
 
 dataframe1 = pd.DataFrame({
@@ -38,6 +38,14 @@ dataframe2 = pd.DataFrame({
 
     })
 
+dataframe3 = pd.DataFrame({ 'A':[], 'B':[], 'C':[], 'ID':[] })
+
+dataframe4 = pd.DataFrame({
+    'ID': ['gxt1bd', 'gxt1f9', 'gxt10i', 'gxt15f', 'gxt0yl', 'gxszzn'],
+    'things': ["cat", "bat", "mat", "doris", "flag", "jam"],
+    'nums': [56,285,95, 455, 12, 46],
+    'log': [True, False, False, True, True, False]
+    })
 
 dataframe_merged = pd.DataFrame.from_dict({'A': {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 11, 7: 8, 8: 22},
                                            'B': {0: 2, 1: 3, 2: 4, 3: 5, 4: 6, 5: 7, 6: 67, 7: 2, 8: 34},
@@ -45,5 +53,8 @@ dataframe_merged = pd.DataFrame.from_dict({'A': {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5
                                            'ID': {0: 'gxt1bd', 1: 'gxt1f9', 2: 'gxt10i', 3: 'gxt15f', 4: 'gxt0yl', 5: 'gxszzn', 6: 'get1jh', 7: 'grt10e', 8: 'gxt1ls'}})
 
 def test_merge_data_unique():
-    assert_frame_equal(di.merge_data_unique(dataframe1, dataframe2), dataframe_merged)
-    
+    assert_frame_equal(rd.merge_data_unique(dataframe1, dataframe2), dataframe_merged)
+    assert_frame_equal(rd.merge_data_unique(dataframe1, dataframe3), dataframe1)
+    assert_frame_equal(rd.merge_data_unique(dataframe3, dataframe1), dataframe1)
+
+pd.merge(left=dataframe1, right=dataframe4, how="outer", on="ID")

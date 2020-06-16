@@ -2,7 +2,7 @@ import base64
 import pandas as pd
 import pandas_gbq
 import praw
-import datetime
+import datetime as dt
 
 # Cloud function config
 project_id = ""
@@ -15,12 +15,26 @@ comments_number = 1000
 topics_list = [""]
 
 
-def cache_reddit_data(event, context):
+# Cloud function config
+project_id = "noted-victory-278517"
+table_sub = "testsun.subreddit"
+table_com = "testsun.comments"
+reddit = praw.Reddit(client_id='RNGhJE66F0dfcg',
+                     client_secret='reMSAKkNv5daoHSRG3Cy15BhVw8',
+                     user_agent='cdc')
+comments_number = 10
+topics_list = ["anorexia"]
+
+
+
+
+
+def cache_reddit_data():
     """
     Stores reddit data
     """
 
-    pubsub_message = base64.b64decode(event['data']).decode('utf-8')
+    print("DEBUG - start cache_reddit_data")
 
     # get the data to store
 
@@ -31,14 +45,14 @@ def cache_reddit_data(event, context):
 
     # find the earliest and latest date, used in the SQL query to check for duplicates
 
-    earliest_date = min(current_data["created"].apply(convert_date))
+    earliest_date = min(current_data["created"])
     earliest_date_string =  earliest_date.strftime("%Y-%m-%d")
 
-    latest_date = max(current_data["created"].apply(convert_date))
+    latest_date = max(current_data["created"])
     latest_date_string =  latest_date.strftime("%Y-%m-%d")
 
-    sql = "SELECT * FROM {0} WHERE backup_date > {1} AND backup_date < {2}"
-    SQL = sql.format(table, earliest_date_string, latest_date_string)
+    sql = 'SELECT * FROM {0} WHERE backup_date > "{1}" AND backup_date < "{2}"'
+    SQL = sql.format(table_sub, earliest_date_string, latest_date_string)
 
     # obtain data from the same period to check for duplciates
     df = pandas_gbq.read_gbq(query=SQL, project_id=project_id)
@@ -59,15 +73,16 @@ def cache_reddit_data(event, context):
 
 # function to get data, adapted from package function
 def get_reddit(topics_list, comments_number):
-
-    reddit = reddit
-
+    print("DEBUG - get_reddit")
     subs_array = get_subreddit_names(reddit, topics_list)
 
+    print("DEBUG- get_subreddit_data")
     database = get_subreddit_data(reddit, subs_array, comments= comments_number, sort="new"  )
 
+    print("DEBUG- get_redditor_data")
     users = get_redditor_data(database.author)
 
+    print("DEBUG- joining")
     final_data = pd.concat([database, users], axis=1, join="outer")
 
     return final_data
@@ -130,7 +145,6 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
     for sub in sub_list:
 
         print('Working on this sub right now: \n', sub)
-
         subreddit = reddit.subreddit(sub)
 
         submission_dict ={'new':subreddit.new, \
@@ -155,7 +169,10 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
             topics_dict["author"].append(submission.author)
             topics_dict["comments"].append(submission.comments)
 
-    topics_data = pd.DataFrame(topics_dict)
+    topics_data_all = pd.DataFrame(topics_dict)
+    topics_data = topics_data_all.dropna()
+    rows_dropped  = len(topics_data_all) - len(topics_data)
+    print("The number of dropped rows is ", rows_dropped)
     return topics_data
 
 def get_redditor_data(redditors):
@@ -180,7 +197,9 @@ def get_redditor_data(redditors):
                     "link_karma": []
                     }
 
+
     for red in redditors:
+        print(red)
         topics_dict["name"].append(red.name)
         topics_dict["created_utc"].append(red.created_utc)
         topics_dict["has_subscribed"].append(red.has_subscribed)
@@ -230,7 +249,6 @@ def convert_date(x):
     '''
     return dt.datetime.fromtimestamp(x)
 
-
 def merge_data_unique(dataset1, dataset2):
     """
     Merged two datasets returning only unique values
@@ -241,6 +259,6 @@ def merge_data_unique(dataset1, dataset2):
 
     """
 
-    merged = pd.merge(left=dataset1, right=dataset2, how="inner")
+    merged = pd.merge(left=dataset1, right=dataset2, how="outer")
 
     return merged

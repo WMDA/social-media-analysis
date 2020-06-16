@@ -1,6 +1,7 @@
 import yaml
 import argparse
 import datetime as dt
+import pandas as pd
 
 def load_config(config_file = "config.yaml"):
     '''
@@ -96,7 +97,7 @@ def merge_data_unique(dataset1, dataset2):
 
     """
 
-    merged = pd.merge(left=dataset1, right=dataset2, how="inner")
+    merged = pd.merge(left=dataset1, right=dataset2, how="outer")
 
     return merged
 

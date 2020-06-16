@@ -107,10 +107,13 @@ def get_redditor_data(redditors):
                     }
 
     for red in redditors:
-        topics_dict["name"].append(red.name)
-        topics_dict["created_utc"].append(red.created_utc)
-        topics_dict["has_subscribed"].append(red.has_subscribed)
-        topics_dict["link_karma"].append(red.link_karma)
+        try:
+            topics_dict["name"].append(red.name)
+            topics_dict["created_utc"].append(red.created_utc)
+            topics_dict["has_subscribed"].append(red.has_subscribed)
+            topics_dict["link_karma"].append(red.link_karma)
+        except:
+            pass 
 
     topics_data = pd.DataFrame(topics_dict)
     return topics_data

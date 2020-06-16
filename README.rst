@@ -1,5 +1,5 @@
 Social Media Analysis
-=====================
+======================
 
 Getting Started
 ---------------

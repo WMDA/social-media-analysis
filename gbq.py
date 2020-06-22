@@ -2,30 +2,20 @@ import base64
 import pandas as pd
 import pandas_gbq
 import praw
-import datetime as dt
-
-# Cloud function config
-project_id = ""
-table_sub = ""
-table_com =
-reddit = praw.Reddit(client_id='RNGhJE66F0dfcg',
-                     client_secret='reMSAKkNv5daoHSRG3Cy15BhVw8',
-                     user_agent='cdc')
-comments_number = 1000
-topics_list = [""]
+import numpy as np
+from prawcore import PrawcoreException
+import datetime
 
 
 # Cloud function config
 project_id = "noted-victory-278517"
-table_sub = "testsun.subreddit"
-table_com = "testsun.comments"
+table_sub = "testtue.subreddit"
+table_com = "testtue.comments"
 reddit = praw.Reddit(client_id='RNGhJE66F0dfcg',
                      client_secret='reMSAKkNv5daoHSRG3Cy15BhVw8',
                      user_agent='cdc')
-comments_number = 10
+comments_number = 5
 topics_list = ["anorexia"]
-
-
 
 
 
@@ -58,11 +48,11 @@ def cache_reddit_data():
     df = pandas_gbq.read_gbq(query=SQL, project_id=project_id)
 
     # Remove duplcates
-    unique_data = merge_data_unique(df, current_data)
+    unique_data = data_to_add(newData=current_data, dataStore=df)
 
     # Add data to bigquery
     pandas_gbq.to_gbq(unique_data, table_sub, project_id=project_id, if_exists="append")
-
+ 
     # Get the comments data
     comment_data = get_comments(reddit, unique_data.id)
 
@@ -107,7 +97,12 @@ def get_subreddit_names(reddit_object, search_terms):
         cont_subreddit = reddit.subreddit("all").search(topic)
 
         for submission in cont_subreddit:
+            try:
                 topics_dict["subreddit"].append(submission.subreddit)
+            except PrawcoreException as err:
+                topics_dict["subreddit"].append(err.args)
+            except Exception as e:
+                topics_dict["subreddit"].append(e.__class__)
 
     data = pd.DataFrame(topics_dict)
 
@@ -145,6 +140,7 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
     for sub in sub_list:
 
         print('Working on this sub right now: \n', sub)
+
         subreddit = reddit.subreddit(sub)
 
         submission_dict ={'new':subreddit.new, \
@@ -158,21 +154,68 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
         cont_subreddit = submission_dict[sort](limit=comments)
 
         for submission in cont_subreddit:
-            topics_dict["title"].append(submission.title)
-            topics_dict["score"].append(submission.score)
-            topics_dict["id"].append(submission.id)
-            topics_dict["url"].append(submission.url)
-            topics_dict["comms_num"].append(submission.num_comments)
-            topics_dict["created"].append(submission.created)
-            topics_dict["body"].append(submission.selftext)
-            topics_dict["subreddit"].append(submission.subreddit)
-            topics_dict["author"].append(submission.author)
-            topics_dict["comments"].append(submission.comments)
-
-    topics_data_all = pd.DataFrame(topics_dict)
-    topics_data = topics_data_all.dropna()
-    rows_dropped  = len(topics_data_all) - len(topics_data)
-    print("The number of dropped rows is ", rows_dropped)
+            try:
+                topics_dict["title"].append(submission.title)
+            except PrawcoreException as err:
+                topics_dict["title"].append(err.args)
+            except Exception as e:
+                topics_dict["title"].append(e.__class__)
+            try:
+                topics_dict["score"].append(submission.score)
+            except PrawcoreException as err:
+                topics_dict["score"].append(err.args)
+            except Exception as e:
+                topics_dict["score"].append(e.__class__)
+            try:
+                topics_dict["id"].append(submission.id)
+            except PrawcoreException as err:
+                topics_dict["id"].append(err.args)
+            except Exception as e:
+                topics_dict["id"].append(e.__class__)
+            try:
+                topics_dict["url"].append(submission.url)
+            except PrawcoreException as err:
+                topics_dict["url"].append(err.args)
+            except Exception as e:
+                topics_dict["url"].append(e.__class__)
+            try:
+                topics_dict["comms_num"].append(submission.num_comments)
+            except PrawcoreException as err:
+                topics_dict["comms_num"].append(err.args)
+            except Exception as e:
+                topics_dict["comms_num"].append(e.__class__)
+            try:
+                topics_dict["created"].append(submission.created)
+            except PrawcoreException as err:
+                topics_dict["created"].append(err.args)
+            except Exception as e:
+                topics_dict["created"].append(e.__class__)
+            try:
+                topics_dict["body"].append(submission.selftext)
+            except PrawcoreException as err:
+                topics_dict["body"].append(err.args)
+            except Exception as e:
+                topics_dict["body"].append(e.__class__)
+            try:
+                topics_dict["subreddit"].append(submission.subreddit)
+            except PrawcoreException as err:
+                topics_dict["subreddit"].append(err.args)
+            except Exception as e:
+                topics_dict["subreddit"].append(e.__class__)   
+            try:
+                topics_dict["author"].append(submission.author)
+            except PrawcoreException as err:
+                topics_dict["author"].append(err.args)
+            except Exception as e:
+                topics_dict["author"].append(e.__class__)
+            try:
+                topics_dict["comments"].append(submission.comments)
+            except PrawcoreException as err:
+                topics_dict["comments"].append(err.args)
+            except Exception as e:
+                topics_dict["comments"].append(e.__class__)       
+                 
+    topics_data = pd.DataFrame(topics_dict)
     return topics_data
 
 def get_redditor_data(redditors):
@@ -197,13 +240,31 @@ def get_redditor_data(redditors):
                     "link_karma": []
                     }
 
-
     for red in redditors:
-        print(red)
-        topics_dict["name"].append(red.name)
-        topics_dict["created_utc"].append(red.created_utc)
-        topics_dict["has_subscribed"].append(red.has_subscribed)
-        topics_dict["link_karma"].append(red.link_karma)
+        try:
+            topics_dict["name"].append(red.name)
+        except PrawcoreException as err:
+            topics_dict["name"].append(err.args)
+        except Exception as e:
+            topics_dict["name"].append(e.__class__)
+        try:
+            topics_dict["created_utc"].append(red.created_utc)
+        except PrawcoreException as err:
+             topics_dict["created_utc"].append(err.args)
+        except Exception as e:
+             topics_dict["created_utc"].append(e.__class__)
+        try:
+            topics_dict["has_subscribed"].append(red.has_subscribed)
+        except PrawcoreException as err:
+             topics_dict["has_subscribed"].append(err.args)
+        except Exception as e:
+            topics_dict["has_subscribed"].append(e.__class__)
+        try:
+            topics_dict["link_karma"].append(red.link_karma)
+        except PrawcoreException as err:
+             topics_dict["link_karma"].append(err.args)
+        except Exception as e:
+            topics_dict["link_karma"].append(e.__class__)
 
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
@@ -234,24 +295,59 @@ def get_comments(reddit_object, ids):
         submission.comments.replace_more(limit=None)
 
         for comment in submission.comments.list():
-            topics_dict['comment_body'].append(comment.body)
-            topics_dict['id_from_thread'].append(i)
-            topics_dict['comment_author'].append(comment.author)
-            topics_dict['comment_permalink'].append(comment.permalink)
-            topics_dict['comment_score'].append(comment.score)
-
+            try:
+                topics_dict["comment_author"].append(comment.author)
+            except PrawcoreException as err:
+                topics_dict["comment_author"].append(err.args)
+            except Exception as e:
+                topics_dict["comment_author"].append(e.__class__)
+            try:
+                topics_dict["id_from_thread"].append(i)
+            except PrawcoreException as err:
+                 topics_dict["id_from_thread"].append(err.args)
+            except Exception as e:
+                 topics_dict["id_from_thread"].append(e.__class__)
+            try:
+                topics_dict["comment_body"].append(comment.body)
+            except PrawcoreException as err:
+                 topics_dict["comment_body"].append(err.args)
+            except Exception as e:
+                topics_dict["comment_body"].append(e.__class__)
+            try:
+                topics_dict["comment_permalink"].append(comment.permalink)
+            except PrawcoreException as err:
+                 topics_dict["comment_permalink"].append(err.args)
+            except Exception as e:
+                topics_dict["comment_permalink"].append(e.__class__)   
+            try:
+                topics_dict["comment_score"].append(comment.score)
+            except PrawcoreException as err:
+                 topics_dict["comment_score"].append(err.args)
+            except Exception as e:
+                topics_dict["comment_score"].append(e.__class__)   
+            
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
+
 
 def convert_date(x):
     '''
     Converts the date column from the reddit api into standard format
     '''
-    return dt.datetime.fromtimestamp(x)
+    return datetime.datetime.fromtimestamp(x)
 
-def merge_data_unique(dataset1, dataset2):
+
+def data_to_add(newData, dataStore):
     """
-    Merged two datasets returning only unique values
+    Filters a pandas dataframe to only new data. Checks the newdata against the datastore 
+    and removes any rows which are already in the datastore returning only new data to be added to the datastore. 
+
+    Parameters
+    ----------
+    newData : TYPE
+        DESCRIPTION.
+    dataStore : TYPE
+        DESCRIPTION.
 
     Returns
     -------
@@ -259,6 +355,14 @@ def merge_data_unique(dataset1, dataset2):
 
     """
 
-    merged = pd.merge(left=dataset1, right=dataset2, how="outer")
+    assert 'id' in newData.columns and 'id' in dataStore.columns, 'both datasets need an id column'
+    
+    newID = newData.id.to_numpy()
 
-    return merged
+    oldID = dataStore.id.to_numpy()
+
+    id_filter = [ID in oldID for ID in newID]
+    
+    id_filter_reverse = np.invert(id_filter)
+    
+    return newData[id_filter_reverse]

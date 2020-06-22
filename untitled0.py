@@ -23,25 +23,56 @@ def combine_subredit_data(subreddit_data, subreddit_author):
     None.
 
     """
+    subreddit_data["auth"] = subreddit_data.author.apply(lambda x: x.name)
+
+    final_data = pd.merge(left=database, right=users,on="Index", how="inner")
     
-    if (subreddit_data.index[-1] -1 == len(subreddit_data)) == False:
-        subreddit_data = subreddit_data.reset_index()
-        print("Resetting index")
+    return final_data
     
-    auth = np.array(subreddit_data.author)
- 
-    names = np.array(subreddit_author.name)
-    
-    dict = {'auth': []}
-    
-    for i in auth:
-        dict["auth"].append(i.name)
-    
-    
-    column_names = ['author', 'created_utc', 'has_subscribed', 'link_karma']
-    
-    
-    final_data = pd.concat([subreddit_data, subreddit_author], axis=1, join="outer")
-    
-    
-    pd.concat([dataframe1, dataframe4], axis=1 )
+
+combine_subredit_data(database, users)
+
+h =  pd.concat([database, users], axis=1, join="outer")
+
+
+users = get_redditor_data(database.author)
+
+def get_redditor_data(redditors):
+    """
+    Given a array of redditors will return attrbutes of each redditor
+
+    Parameters
+    ----------
+    def get_redditor_data : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
+
+
+    topics_dict = { "name": [],
+                    "created_utc": [],
+                    "has_subscribed": [],
+                    "link_karma": []
+                    }
+
+
+    for red in redditors:
+        try:
+            print(red)
+            topics_dict["name"].append(red.name)
+            topics_dict["created_utc"].append(red.created_utc)
+            topics_dict["has_subscribed"].append(red.has_subscribed)
+            topics_dict["link_karma"].append(red.link_karma)
+        except NameError:
+            topics_dict["name"].append(None)
+            topics_dict["created_utc"].append(None)
+            topics_dict["has_subscribed"].append(None)
+            topics_dict["link_karma"].append(None)
+            
+
+    topics_data = pd.DataFrame(topics_dict)
+    return topics_data

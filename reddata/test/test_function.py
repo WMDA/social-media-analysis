@@ -56,5 +56,32 @@ def test_merge_data_unique():
     assert_frame_equal(rd.merge_data_unique(dataframe1, dataframe2), dataframe_merged)
     assert_frame_equal(rd.merge_data_unique(dataframe1, dataframe3), dataframe1)
     assert_frame_equal(rd.merge_data_unique(dataframe3, dataframe1), dataframe1)
+    assert_frame_equal(rd.merge_data_unique(dataframe1, dataframe1), dataframe1)
 
-pd.merge(left=dataframe1, right=dataframe4, how="outer", on="ID")
+
+datastore = pd.DataFrame({
+      'A': [1,2,3,4,5,6, 56,155],
+      'B': [2,3,4,5,6,7, 57,199],
+      'C': ["hat", "cat", "mat", "sat", "bat", "flat", "flan", "plan"],
+     'id': ['gxt1bd', 'gxt1f9', 'gxt10i', 'gxt15f', 'gxt0yl', 'gxszzn', 'hcuwd4', 'hd4nl1']
+     })
+
+newData = pd.DataFrame({
+      'A': [3,4,5,6, 56,155,4,6867],
+      'B': [4,5,6,7, 57,199,987,9],
+      'C': ["mat", "sat", "bat", "flat", "flan", "plan", "harry", "pop"],
+     'id': ['gxt10i', 'gxt15f', 'gxt0yl', 'gxszzn', 'hcuwd4', 'hd4nl1', 'hcsxmq', 'hd4jx6']
+     })
+
+newdata_only = pd.DataFrame({
+      'A': [4,6867],
+      'B': [987,9],
+      'C': ["harry", "pop"],
+     'id': ['hcsxmq', 'hd4jx6']
+     })
+
+def test_data_to_add():
+    assert_frame_equal(rd.data_to_add(newData, datastore), newdata_only)
+
+
+

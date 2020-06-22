@@ -8,22 +8,22 @@ import datetime
 
 
 # Cloud function config
-project_id = "noted-victory-278517"
-table_sub = "testtue.subreddit"
-table_com = "testtue.comments"
-reddit = praw.Reddit(client_id='RNGhJE66F0dfcg',
-                     client_secret='reMSAKkNv5daoHSRG3Cy15BhVw8',
-                     user_agent='cdc')
-comments_number = 5
-topics_list = ["anorexia"]
+project_id = 
+table_sub = "
+table_com = 
+reddit = praw.Reddit(client_id='',
+                     client_secret='',
+                     user_agent='')
+comments_number = 
+topics_list = []
 
 
 
-def cache_reddit_data():
+def cache_reddit_data(event, context):
     """
     Stores reddit data
     """
-
+    message = base64.b64decode(event['data']).decode('utf-8')
     print("DEBUG - start cache_reddit_data")
 
     # get the data to store

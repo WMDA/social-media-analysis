@@ -5,26 +5,39 @@ from prawcore import PrawcoreException
 import reddata as rd
 
 def get_subreddit_names(reddit_object, search_terms):
+    """
+    Given a seach term returns all the subredits in which that term is mentioned
 
+    Parameters
+    ----------
+    reddit_object : TYPE
+        DESCRIPTION.
+    search_terms : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    data : ndarrary object of numpy module
+        DESCRIPTION.
+
+    """
     reddit = reddit_object
 
-    topics_dict = {
-                        "subreddit": []
-                  }
+    topics_dict = {"subreddit": []}
+    atts = topics_dict.keys()
 
-    topic_list = search_terms
+    for term in search_terms:
 
-    for topic in topic_list:
-
-        cont_subreddit = reddit.subreddit("all").search(topic)
+        cont_subreddit = reddit.subreddit("all").search(term)
 
         for submission in cont_subreddit:
-            try:
-                topics_dict["subreddit"].append(submission.subreddit)
-            except PrawcoreException as err:
-                topics_dict["subreddit"].append(err.args)
-            except Exception as e:
-                topics_dict["subreddit"].append(e.__class__)
+            for att in atts:
+                try:
+                    topics_dict[att].append(getattr(submission, att))
+                except PrawcoreException as err:
+                    topics_dict[att].append(err.args)
+                except Exception as e:
+                    topics_dict[att].append(e.__class__)
 
     data = pd.DataFrame(topics_dict)
 
@@ -46,16 +59,19 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
 
     reddit = reddit_object
 
-    topics_dict = {     "title":[], \
-                        "score":[], \
-                        "id":[], "url":[], \
-                        "comms_num": [], \
-                        "created": [], \
-                        "body":[], \
+    topics_dict = {     "title":[],
+                        "score":[],
+                        "id":[],
+                        "url":[],
+                        "num_comments": [],
+                        "created": [],
+                        "selftext":[],
                         "subreddit": [],
                         "author": [],
                         "comments": []
                   }
+
+    atts = topics_dict.keys()
 
     sub_list = subs
 
@@ -76,67 +92,14 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
         cont_subreddit = submission_dict[sort](limit=comments)
 
         for submission in cont_subreddit:
-            try:
-                topics_dict["title"].append(submission.title)
-            except PrawcoreException as err:
-                topics_dict["title"].append(err.args)
-            except Exception as e:
-                topics_dict["title"].append(e.__class__)
-            try:
-                topics_dict["score"].append(submission.score)
-            except PrawcoreException as err:
-                topics_dict["score"].append(err.args)
-            except Exception as e:
-                topics_dict["score"].append(e.__class__)
-            try:
-                topics_dict["id"].append(submission.id)
-            except PrawcoreException as err:
-                topics_dict["id"].append(err.args)
-            except Exception as e:
-                topics_dict["id"].append(e.__class__)
-            try:
-                topics_dict["url"].append(submission.url)
-            except PrawcoreException as err:
-                topics_dict["url"].append(err.args)
-            except Exception as e:
-                topics_dict["url"].append(e.__class__)
-            try:
-                topics_dict["comms_num"].append(submission.num_comments)
-            except PrawcoreException as err:
-                topics_dict["comms_num"].append(err.args)
-            except Exception as e:
-                topics_dict["comms_num"].append(e.__class__)
-            try:
-                topics_dict["created"].append(submission.created)
-            except PrawcoreException as err:
-                topics_dict["created"].append(err.args)
-            except Exception as e:
-                topics_dict["created"].append(e.__class__)
-            try:
-                topics_dict["body"].append(submission.selftext)
-            except PrawcoreException as err:
-                topics_dict["body"].append(err.args)
-            except Exception as e:
-                topics_dict["body"].append(e.__class__)
-            try:
-                topics_dict["subreddit"].append(submission.subreddit)
-            except PrawcoreException as err:
-                topics_dict["subreddit"].append(err.args)
-            except Exception as e:
-                topics_dict["subreddit"].append(e.__class__)   
-            try:
-                topics_dict["author"].append(submission.author)
-            except PrawcoreException as err:
-                topics_dict["author"].append(err.args)
-            except Exception as e:
-                topics_dict["author"].append(e.__class__)
-            try:
-                topics_dict["comments"].append(submission.comments)
-            except PrawcoreException as err:
-                topics_dict["comments"].append(err.args)
-            except Exception as e:
-                topics_dict["comments"].append(e.__class__)       
-                 
+            for att in atts:
+                try:
+                    topics_dict[att].append(getattr(submission, att))
+                except PrawcoreException as err:
+                    topics_dict[att].append(err.args)
+                except Exception as e:
+                    topics_dict[att].append(e.__class__)
+
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
 
@@ -162,31 +125,16 @@ def get_redditor_data(redditors):
                     "link_karma": []
                     }
 
+    atts = topics_dict.keys()
+
     for red in redditors:
-        try:
-            topics_dict["name"].append(red.name)
-        except PrawcoreException as err:
-            topics_dict["name"].append(err.args)
-        except Exception as e:
-            topics_dict["name"].append(e.__class__)
-        try:
-            topics_dict["created_utc"].append(red.created_utc)
-        except PrawcoreException as err:
-             topics_dict["created_utc"].append(err.args)
-        except Exception as e:
-             topics_dict["created_utc"].append(e.__class__)
-        try:
-            topics_dict["has_subscribed"].append(red.has_subscribed)
-        except PrawcoreException as err:
-             topics_dict["has_subscribed"].append(err.args)
-        except Exception as e:
-            topics_dict["has_subscribed"].append(e.__class__)
-        try:
-            topics_dict["link_karma"].append(red.link_karma)
-        except PrawcoreException as err:
-             topics_dict["link_karma"].append(err.args)
-        except Exception as e:
-            topics_dict["link_karma"].append(e.__class__)
+            for att in atts:
+                try:
+                    topics_dict[att].append(getattr(red, att))
+                except PrawcoreException as err:
+                    topics_dict[att].append(err.args)
+                except Exception as e:
+                    topics_dict[att].append(e.__class__)
 
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
@@ -204,12 +152,13 @@ def get_comments(reddit_object, ids):
     """
     reddit = reddit_object
 
-    topics_dict ={"comment_author":[], \
-                  "id_from_thread":[], \
-                  "comment_body":[], \
-                  "comment_permalink":[],\
-                  "comment_score":[]}
+    topics_dict ={"author":[], \
+                  "id":[], \
+                  "body":[], \
+                  "permalink":[],\
+                  "score":[]}
 
+    atts = topics_dict.keys()
 
     for i in ids:
 
@@ -217,37 +166,14 @@ def get_comments(reddit_object, ids):
         submission.comments.replace_more(limit=None)
 
         for comment in submission.comments.list():
-            try:
-                topics_dict["comment_author"].append(comment.author)
-            except PrawcoreException as err:
-                topics_dict["comment_author"].append(err.args)
-            except Exception as e:
-                topics_dict["comment_author"].append(e.__class__)
-            try:
-                topics_dict["id_from_thread"].append(i)
-            except PrawcoreException as err:
-                 topics_dict["id_from_thread"].append(err.args)
-            except Exception as e:
-                 topics_dict["id_from_thread"].append(e.__class__)
-            try:
-                topics_dict["comment_body"].append(comment.body)
-            except PrawcoreException as err:
-                 topics_dict["comment_body"].append(err.args)
-            except Exception as e:
-                topics_dict["comment_body"].append(e.__class__)
-            try:
-                topics_dict["comment_permalink"].append(comment.permalink)
-            except PrawcoreException as err:
-                 topics_dict["comment_permalink"].append(err.args)
-            except Exception as e:
-                topics_dict["comment_permalink"].append(e.__class__)   
-            try:
-                topics_dict["comment_score"].append(comment.score)
-            except PrawcoreException as err:
-                 topics_dict["comment_score"].append(err.args)
-            except Exception as e:
-                topics_dict["comment_score"].append(e.__class__)   
-            
+            for att in atts:
+                try:
+                    topics_dict[att].append(getattr(comment, att))
+                except PrawcoreException as err:
+                    topics_dict[att].append(err.args)
+                except Exception as e:
+                    topics_dict[att].append(e.__class__)
+
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
 

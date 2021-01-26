@@ -4,3 +4,4 @@ praw.ini
 .pytest_cache
 __pycache__
 *.pyc
+data_test.py

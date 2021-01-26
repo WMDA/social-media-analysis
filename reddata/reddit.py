@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import pandas as pd
 import praw
+import prawcore
 import reddata as rd
 
 def get_subreddit_names(reddit_object, search_terms):
@@ -48,7 +49,6 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
                         "body":[], \
                         "subreddit": [],
                         "author": [],
-                        "comments": []
                   }
 
     sub_list = subs
@@ -64,11 +64,11 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
                           'gilded':subreddit.gilded,\
                           'hot':subreddit.hot,\
                           'rising':subreddit.rising,\
-                          'top':subreddit.top }
+                          'top':subreddit.top
+                           }
 
 
         cont_subreddit = submission_dict[sort](limit=comments)
-
         for submission in cont_subreddit:
             topics_dict["title"].append(submission.title)
             topics_dict["score"].append(submission.score)
@@ -79,7 +79,6 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
             topics_dict["body"].append(submission.selftext)
             topics_dict["subreddit"].append(submission.subreddit)
             topics_dict["author"].append(submission.author)
-            topics_dict["comments"].append(submission.comments)
 
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
@@ -99,22 +98,24 @@ def get_redditor_data(redditors):
 
     """
 
-
-    topics_dict = { "name": [],
-                    "created_utc": [],
-                    "has_subscribed": [],
-                    "link_karma": []
-                    }
+    redditors_dict = { "name": [],
+                        "created_utc": [],
+                        "has_subscribed": [],
+                        "link_karma": [] }
 
     for red in redditors:
-        topics_dict["name"].append(red.name)
-        topics_dict["created_utc"].append(red.created_utc)
-        topics_dict["has_subscribed"].append(red.has_subscribed)
-        topics_dict["link_karma"].append(red.link_karma)
+        try:
+            redditors_dict["name"].append(red.name)
+            redditors_dict["created_utc"].append(red.created_utc)
+            redditors_dict["has_subscribed"].append(red.has_subscribed)
+            redditors_dict["link_karma"].append(red.link_karma)
+        except prawcore.exceptions.NotFound:
+            redditors_dict["created_utc"].append('NA')
+            redditors_dict["has_subscribed"].append('NA')
+            redditors_dict["link_karma"].append('NA')
 
-    topics_data = pd.DataFrame(topics_dict)
-    return topics_data
-
+    redditors_data = pd.DataFrame(redditors_dict)
+    return redditors_data
 
 
 def get_comments(reddit_object, ids):
@@ -139,19 +140,20 @@ def get_comments(reddit_object, ids):
 
         submission = reddit.submission(id=i)
         submission.comments.replace_more(limit=None)
-
-        for comment in submission.comments.list():
-            topics_dict['comment_body'].append(comment.body)
-            topics_dict['id_from_thread'].append(i)
-            topics_dict['comment_author'].append(comment.author)
-            topics_dict['comment_permalink'].append(comment.permalink)
-            topics_dict['comment_score'].append(comment.score)
-
+        try:
+            for comment in submission.comments.list():
+                topics_dict['comment_body'].append(comment.body)
+                topics_dict['id_from_thread'].append(i)
+                topics_dict['comment_author'].append(comment.author)
+                topics_dict['comment_permalink'].append(comment.permalink)
+                topics_dict['comment_score'].append(comment.score)
+        except prawcore.exceptions.NotFound:
+            pass
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
 
 
-def get_reddit(topics_list, comments_number, reddit_inst= "env"):
+def get_reddit(topics, comments_number, reddit_inst= "env", drop=False):
     """
     A wrapper for other disinfo functions to collect reddit data
 
@@ -175,12 +177,18 @@ def get_reddit(topics_list, comments_number, reddit_inst= "env"):
     else:
         reddit = reddit_inst
 
-    subs_array = rd.get_subreddit_names(reddit, topics_list)
+    subreddit_names = rd.get_subreddit_names(reddit, topics)
+    number_sub=len(subreddit_names)
+    print(f'\nFound {number_sub} subreddits\n')
 
-    database = rd.get_subreddit_data(reddit, subs_array, comments= comments_number, sort="new"  )
-
+    database = rd.get_subreddit_data(reddit, subreddit_names, comments= comments_number, sort="new")
+    print('\nCollecting redditors details')
     users = rd.get_redditor_data(database.author)
-
     final_data = pd.concat([database, users], axis=1, join="outer")
 
-    return final_data
+    if drop==False:
+        print('\nCollecting comments from subreddits')
+        comments = get_comments(reddit,final_data['id'])
+        return final_data , comments
+    else:
+        return final_data

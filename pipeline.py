@@ -15,6 +15,7 @@ import reddata as rd
 import praw
 import pandas as pd
 import pandas_gbq
+import sys
 
 #Takes command line arguments
 options= rd.get_arguments()
@@ -22,7 +23,6 @@ options= rd.get_arguments()
 #Assigns options to variables
 topics_list = options.topics
 number_comments = int(options.comments)
-
 # Warning messages if no file name or no file directory given.
 #For dev purposes and checking script works, command line can be run without having to save results.
 if options.name and not options.csv:
@@ -41,34 +41,38 @@ else:
 
 #Calls reddit functions from reddit.py
 #Sorts comments out either by -s input or default is new.
-reddit = praw.Reddit("reddit")
-subs_array = rd.get_subreddit_names(reddit, topics_list)
 
+try:
+    if not options.drop:
+        if options.sort:
+            database, comments = rd.get_reddit(topics_list, number_comments, options.sort)
+        else:
+            database,comments = rd.get_reddit(topics_list, number_comments)
+    # Assigns results to csv (-csv) or gbq (-gbq & -n) if those options are selected.
+        if options.csv and not options.name:
+            database.to_csv("%s/reddit_database.csv" % options.csv, encoding='utf-8', index=False)
+            comments.to_csv("%s/reddit_comments_database.csv" % options.csv, encoding='utf-8', index=False)
+        elif options.csv and options.name:
+            database.to_csv("%s/%s.csv" % (options.csv,options.name), encoding='utf-8', index=False)
+            comments.to_csv("%s/%s_comments.csv" % (options.csv,options.name), encoding='utf-8', index=False)
+        elif options.gbq:
+            database.to_gbq('%s.reddit_table' %options.name,'%s' %options.gbq, chunksize=None, if_exists='append')
+            comments.to_gbq('%s.reddit_comments_table' %options.name,'%s' %options.gbq, chunksize=None, if_exists='append')
+    elif options.drop:
+        if options.sort:
+            database = rd.get_reddit(topics_list, number_comments,options.sort, drop=options.drop)
+        else:
+            database = rd.get_reddit(topics_list, number_comments,drop=options.drop)
+            if options.csv and not options.name:
+                database.to_csv("%s/reddit_database.csv" % options.csv, encoding='utf-8', index=False)
+            elif options.csv and options.name:
+                database.to_csv("%s/%s.csv" % (options.csv,options.name), encoding='utf-8', index=False)
+            elif options.gbq:
+                database.to_gbq('%s.reddit_table' %options.name,'%s' %options.gbq, chunksize=None, if_exists='append')
+    print('\nFinished prawing reddit!!')
+    sys.exit(0)
+except KeyboardInterrupt:
+    print('\nUser requested shutdown..exiting')
+    sys.exit(0)
 
-if not options.drop:
-    if options.sort:
-        database,comments = rd.get_subreddit_data(reddit, subs_array, number_comments,options.sort)
-    else:
-        database,comments = rd.get_subreddit_data(reddit, subs_array, number_comments)
     # Assigns results to csv (-csv) or gbq (-gbq & -n) if those options are selected.
-    if options.csv and not options.name:
-        database.to_csv("%s/reddit_database.csv" % options.csv, encoding='utf-8', index=False)
-        comments.to_csv("%s/reddit_comments_database.csv" % options.csv, encoding='utf-8', index=False)
-    elif options.csv and options.name:
-        database.to_csv("%s/%s.csv" % (options.csv,options.name), encoding='utf-8', index=False)
-        comments.to_csv("%s/%s_comments.csv" % (options.csv,options.name), encoding='utf-8', index=False)
-    elif options.gbq:
-        database.to_gbq('%s.reddit_table' %options.name,'%s' %options.gbq, chunksize=None, if_exists='append')
-        comments.to_gbq('%s.reddit_comments_table' %options.name,'%s' %options.gbq, chunksize=None, if_exists='append')
-else:
-    if options.sort:
-        database = rd.get_subreddit_data(reddit, subs_array, number_comments,options.sort,collect_comments=False)
-    else:
-        database = rd.get_subreddit_data(reddit, subs_array, number_comments,collect_comments=False)
-    # Assigns results to csv (-csv) or gbq (-gbq & -n) if those options are selected.
-    if options.csv and not options.name:
-        database.to_csv("%s/reddit_database.csv" % options.csv, encoding='utf-8', index=False)
-    elif options.csv and options.name:
-        database.to_csv("%s/%s.csv" % (options.csv,options.name), encoding='utf-8', index=False)
-    elif options.gbq:
-        database.to_gbq('%s.reddit_table' %options.name,'%s' %options.gbq, chunksize=None, if_exists='append')

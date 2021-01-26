@@ -1,4 +1,3 @@
-README.md
 README.rst
 setup.py
 reddata/__init__.py

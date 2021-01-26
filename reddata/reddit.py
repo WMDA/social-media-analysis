@@ -140,15 +140,13 @@ def get_comments(reddit_object, ids):
 
         submission = reddit.submission(id=i)
         submission.comments.replace_more(limit=None)
-        try:
-            for comment in submission.comments.list():
-                topics_dict['comment_body'].append(comment.body)
-                topics_dict['id_from_thread'].append(i)
-                topics_dict['comment_author'].append(comment.author)
-                topics_dict['comment_permalink'].append(comment.permalink)
-                topics_dict['comment_score'].append(comment.score)
-        except prawcore.exceptions.NotFound:
-            pass
+        for comment in submission.comments.list():
+            topics_dict['comment_body'].append(comment.body)
+            topics_dict['id_from_thread'].append(i)
+            topics_dict['comment_author'].append(comment.author)
+            topics_dict['comment_permalink'].append(comment.permalink)
+            topics_dict['comment_score'].append(comment.score)
+
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
 

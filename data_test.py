@@ -23,7 +23,7 @@ def get_subreddit_names(reddit_object, search_terms):
 
 
 def get_redditor_data(redditors):
-       """
+    """
     Given a array of redditors will return attrbutes of each redditor
 
     Parameters
@@ -36,8 +36,8 @@ def get_redditor_data(redditors):
     None.
 
     """
-    
-   
+
+
     redditors_dict = { "name": [],
                     "created_utc": [],
                     "has_subscribed": [],
@@ -45,17 +45,25 @@ def get_redditor_data(redditors):
                     }
     for red in redditors:
         try:
-            redditors_dict["name"].append(red.name)
-            redditors_dict["created_utc"].append(red.created_utc)
-            redditors_dict["has_subscribed"].append(red.has_subscribed)
-            redditors_dict["link_karma"].append(red.link_karma)
-        except prawcore.exceptions.NotFound:
+            deleted_User_check=str(red)
+            print(red)
+            if deleted_User_check =='None':
+                redditors_dict["name"].append('Deleted_User')
+                redditors_dict["created_utc"].append('Deleted_User')
+                redditors_dict["has_subscribed"].append('Deleted_User')
+                redditors_dict["link_karma"].append('Deleted_User')
+            else:
+                redditors_dict["name"].append(red.name)
+                redditors_dict["created_utc"].append(red.created_utc)
+                redditors_dict["has_subscribed"].append(red.has_subscribed)
+                redditors_dict["link_karma"].append(red.link_karma)
+        except (prawcore.exceptions.NotFound, AttributeError):
             redditors_dict["created_utc"].append('NA')
             redditors_dict["has_subscribed"].append('NA')
             redditors_dict["link_karma"].append('NA')
 
-    
-        
+
+
     redditors_data = pd.DataFrame(redditors_dict)
     return redditors_data
 
@@ -106,13 +114,13 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
 
-df=get_subreddit_names(reddit,["derbyshire"])
+df=get_subreddit_names(reddit,["anorexia"])
 print(len(df))
-df1 = get_subreddit_data(reddit,df, comments=1)
+df1 = get_subreddit_data(reddit,df, comments=1)#, sort='controversial')
 df2= get_redditor_data(df1.author)
 
+#print('\rHello:', end='')
 
 #df.to_csv("~/Documents/Codes/social-media/reddit_database.csv", encoding='utf-8', index=False)
 #comments.to_csv("~/Documents/Codes/social-media/comments_database.csv", encoding='utf-8', index=False)
 #comment = rd.get_comments( reddit_object = reddit , ids= reddit_data.id)
-

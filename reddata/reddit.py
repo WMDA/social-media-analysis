@@ -105,11 +105,18 @@ def get_redditor_data(redditors):
 
     for red in redditors:
         try:
-            redditors_dict["name"].append(red.name)
-            redditors_dict["created_utc"].append(red.created_utc)
-            redditors_dict["has_subscribed"].append(red.has_subscribed)
-            redditors_dict["link_karma"].append(red.link_karma)
-        except prawcore.exceptions.NotFound:
+            deleted_User_check=str(red)
+            if deleted_User_check =='None':
+                redditors_dict["name"].append('Deleted_User')
+                redditors_dict["created_utc"].append('Deleted_User')
+                redditors_dict["has_subscribed"].append('Deleted_User')
+                redditors_dict["link_karma"].append('Deleted_User')
+            else:
+                redditors_dict["name"].append(red.name)
+                redditors_dict["created_utc"].append(red.created_utc)
+                redditors_dict["has_subscribed"].append(red.has_subscribed)
+                redditors_dict["link_karma"].append(red.link_karma)
+        except (prawcore.exceptions.NotFound, AttributeError):
             redditors_dict["created_utc"].append('NA')
             redditors_dict["has_subscribed"].append('NA')
             redditors_dict["link_karma"].append('NA')
@@ -151,9 +158,9 @@ def get_comments(reddit_object, ids):
     return topics_data
 
 
-def get_reddit(topics, comments_number, reddit_inst= "env", drop=False):
+def get_reddit(topics, comments_number, reddit_inst= "env",sort='new', drop=False):
     """
-    A wrapper for other disinfo functions to collect reddit data
+    A wrapper for collecting all functions
 
     Parameters
     ----------
@@ -179,13 +186,13 @@ def get_reddit(topics, comments_number, reddit_inst= "env", drop=False):
     number_sub=len(subreddit_names)
     print(f'\nFound {number_sub} subreddits\n')
 
-    database = rd.get_subreddit_data(reddit, subreddit_names, comments= comments_number, sort="new")
+    database = rd.get_subreddit_data(reddit, subreddit_names, comments= comments_number, sort=sort)
     print('\nCollecting redditors details')
     users = rd.get_redditor_data(database.author)
     final_data = pd.concat([database, users], axis=1, join="outer")
-
     if drop==False:
         print('\nCollecting comments from subreddits')
+        print('\n')
         comments = get_comments(reddit,final_data['id'])
         return final_data , comments
     else:

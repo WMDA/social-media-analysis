@@ -45,7 +45,7 @@ else:
 try:
     if not options.drop:
         if options.sort:
-            database, comments = rd.get_reddit(topics_list, number_comments, options.sort)
+            database, comments = rd.get_reddit(topics_list, number_comments, sort=options.sort)
         else:
             database,comments = rd.get_reddit(topics_list, number_comments)
     # Assigns results to csv (-csv) or gbq (-gbq & -n) if those options are selected.
@@ -53,14 +53,14 @@ try:
             database.to_csv("%s/reddit_database.csv" % options.csv, encoding='utf-8', index=False)
             comments.to_csv("%s/reddit_comments_database.csv" % options.csv, encoding='utf-8', index=False)
         elif options.csv and options.name:
-            database.to_csv("%s/%s.csv" % (options.csv,options.name), encoding='utf-8', index=False)
+            database.to_csv("%s/%s_database.csv" % (options.csv,options.name), encoding='utf-8', index=False)
             comments.to_csv("%s/%s_comments.csv" % (options.csv,options.name), encoding='utf-8', index=False)
         elif options.gbq:
             database.to_gbq('%s.reddit_table' %options.name,'%s' %options.gbq, chunksize=None, if_exists='append')
             comments.to_gbq('%s.reddit_comments_table' %options.name,'%s' %options.gbq, chunksize=None, if_exists='append')
     elif options.drop:
         if options.sort:
-            database = rd.get_reddit(topics_list, number_comments,options.sort, drop=options.drop)
+            database = rd.get_reddit(topics_list, number_comments,sort=options.sort, drop=options.drop)
         else:
             database = rd.get_reddit(topics_list, number_comments,drop=options.drop)
             if options.csv and not options.name:
@@ -69,7 +69,7 @@ try:
                 database.to_csv("%s/%s.csv" % (options.csv,options.name), encoding='utf-8', index=False)
             elif options.gbq:
                 database.to_gbq('%s.reddit_table' %options.name,'%s' %options.gbq, chunksize=None, if_exists='append')
-    print('\nFinished prawing reddit!!')
+    print('\nFinished prawing reddit!!\n')
     sys.exit(0)
 except KeyboardInterrupt:
     print('\nUser requested shutdown..exiting')

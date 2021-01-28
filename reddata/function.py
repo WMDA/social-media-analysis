@@ -42,7 +42,7 @@ def get_arguments():
     parse.add_argument("-D","--drop",dest="drop",help="Tells pipeline not to search for comments in threads. Searching for comments slows pipeline down and sometimes unnecessary.",action="store_true")
     options= parse.parse_args()
     if options.sort:
-        sort_list =["controversal", 'gilded', 'hot','rising', 'top']
+        sort_list =["controversial", 'gilded', 'hot','rising', 'top']
         if options.sort not in sort_list:
             parse.error("Unknown sort option given. Use -h for support")
     if options.gbq and not options.name:

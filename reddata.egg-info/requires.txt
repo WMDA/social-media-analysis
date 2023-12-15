@@ -11,5 +11,5 @@ PyYAML==5.4
 requests==2.23.0
 six==1.15.0
 update-checker==0.17
-urllib3==1.26.5
+urllib3==1.26.18
 websocket-client==0.57.0
